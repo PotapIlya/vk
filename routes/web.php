@@ -12,11 +12,28 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+/** Guest **/
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'Guest\GuestController@index')->name('guest.index');
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+
+/** Users **/
+
+$groupData = [
+	'namespace' => 'Users',
+	'prefix' => '/',
+	'middleware' => 'auth',
+];
+
+Route::group($groupData, function ()
+{
+	Route::resource('/my', 'IndexController')->names('user.index');
+
+});
+
+
+
