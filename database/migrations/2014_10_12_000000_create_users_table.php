@@ -16,10 +16,10 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('login', 255)->unique();
-            $table->string('first_name', 255)->default(null)->nullable();
-            $table->string('last_name', 255)->default(null)->nullable();
+            $table->string('first_name', 255);
+            $table->string('last_name', 255);
 
-			$table->integer('gender')->default(1);
+			$table->string('gender', 20)->default('on');
 
 			$table->string('family_status', 255)->default(null)->nullable();
 			$table->date('birthday')->default(null)->nullable();

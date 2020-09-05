@@ -2,22 +2,31 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Components\ImageUploads;
+use App\Components\Images\ActionImages;
 use App\Http\Controllers\Users\BaseUserController;
+use App\Repositories\Users\GalleryRepository;
 use Illuminate\Http\Request;
 use Auth;
 
 class IndexController extends BaseUserController
 {
+	const SUCCESS_UPLOAD = 'Фотография добавлена';
+	const SUCCESS_DELETE = 'Удалено';
+	const ERROR = 'Ой, что то пошло не так';
+	const IMG_NO_SELECTED = 'Вы не выбрали изображение';
 
-	private $imageUploads;
 
-	public function __construct(ImageUploads $imageUploads
+	private $actionImage;
+	private $galleryRepository;
+
+	public function __construct(ActionImages $actionImages,
+								GalleryRepository $galleryRepository
 	)
 	{
 		parent::__construct();
 
-		$this->imageUploads = $imageUploads;
+		$this->actionImage = $actionImages;
+		$this->galleryRepository = $galleryRepository;
 	}
 
     /**
@@ -27,7 +36,20 @@ class IndexController extends BaseUserController
      */
     public function index()
     {
-		return view('user.my.index');
+    	$user = Auth::user();
+
+
+    	$images = $this->galleryRepository->getCountImage($user->id, 4);
+
+
+
+    	if ($user) $user = $user->load('about');
+
+
+		return view('user.my.index', compact(
+			'user',
+			'images'
+		));
     }
 
     /**
@@ -87,13 +109,23 @@ class IndexController extends BaseUserController
      */
     public function update(Request $request, $id)
     {
+    	// add rules for request
+
+		$update = Auth::user()->update($request->all());
+		if (!$update) {
+			return redirect()->route('user.index.index')->withErrors(['msc' => self::ERROR]);
+		}
+
+
+
     	$image = $request->file('image');
     	if (!is_null($image))
 		{
-			$this->imageUploads->upload($image);
+			$userAbout = Auth::user()->about->img;
+			$this->actionImage->deleteAndUpload($image, $userAbout, $id);
 		}
 
-    	return redirect()->back()->with(['success' => 'Сохранено!']);
+    	return redirect()->route('user.index.index')->with(['success' => self::SAVE]);
     }
 
     /**

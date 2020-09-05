@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'Guest\GuestController@index')->name('guest.index');
 
 
-Auth::routes();
+Auth::routes(['reset' => false]);
 
 
 
@@ -32,6 +32,7 @@ $groupData = [
 Route::group($groupData, function ()
 {
 	Route::resource('/my', 'IndexController')->names('user.index');
+	Route::resource('/gallery', 'GalleryController')->names('user.gallery');
 
 });
 
