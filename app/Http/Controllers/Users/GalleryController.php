@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Users;
 
 use App\Components\Images\ActionImages;
 use App\Http\Controllers\Controller;
+use App\Models\Users\User;
+use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
 use App\Repositories\Users\GalleryRepository;
 use Auth;
@@ -14,16 +16,18 @@ class GalleryController extends BaseUserController
 
 	private $galleryRepository;
 	private $uploadImage;
+	private $userRepository;
 
 	public function __construct(
 								GalleryRepository $galleryRepository,
-								ActionImages $uploadImages
+								ActionImages $uploadImages, UserRepository $userRepository
 	)
 	{
 		parent::__construct();
 
 		$this->galleryRepository = $galleryRepository;
 		$this->uploadImage = $uploadImages;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -33,10 +37,6 @@ class GalleryController extends BaseUserController
      */
     public function index()
     {
-//    	$userId = Auth::id();
-//
-//		$gallery = $this->galleryRepository->getAllImages($userId);
-
 
     	return view('user.gallery.index');
     }
@@ -59,21 +59,22 @@ class GalleryController extends BaseUserController
      */
     public function store(Request $request)
     {
-    	$image = $request->file('image');
-		$userId = Auth::id();
-
-		if (!is_null($image))
-		{
-			$upload = $this->uploadImage->uploadImg($image, $userId);
-			if (!$upload){
-				return redirect()->back()->withErrors(['msg' => self::ERROR]);
-			}
-
-			return redirect()->route('user.gallery.index')->with(['success' => self::SUCCESS_UPLOAD]);
-		}
-		else{
-			return redirect()->back()->withErrors(['msg' => self::IMG_NO_SELECTED]);
-		}
+    	dd('store');
+//    	$image = $request->file('image');
+//
+//
+//		if (!is_null($image))
+//		{
+//			$upload = $this->uploadImage->uploadImg($image);
+//			if (!$upload){
+//				return redirect()->back()->withErrors(['msg' => self::ERROR]);
+//			}
+//
+//			return redirect()->route('user.gallery.index')->with(['success' => self::SUCCESS_UPLOAD]);
+//		}
+//		else{
+//			return redirect()->back()->withErrors(['msg' => self::IMG_NO_SELECTED]);
+//		}
     }
 
     /**
@@ -90,11 +91,27 @@ class GalleryController extends BaseUserController
 			return redirect()->back()->withErrors(['msg' => self::ERROR]);
 		}
 
+
 		return view('user.gallery.show', compact(
 			'image'
 		));
 
     }
+
+
+    public function showGalleryPersone($id)
+	{
+
+
+		$userImages = $this->galleryRepository->getAllUserImages( $id );
+
+
+//		dd($userImages);
+
+		return view('user.gallery.persone', compact(
+			'userImages'
+		));
+	}
 
     /**
      * Show the form for editing the specified resource.

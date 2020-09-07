@@ -20,9 +20,11 @@ class GalleryComponent extends CoreLivewire
 
 	public function render()
 	{
-		$this->gallery = $this->galleryRepository->getAllUserImages();
+		$userId = Auth::id();
 
-		return view('user.gallery.livewire.app');
+		$this->gallery = $this->galleryRepository->getAllUserImages($userId);
+
+		return view('user.gallery.livewire.index');
 	}
 
 	public function destroy($id)
@@ -35,8 +37,9 @@ class GalleryComponent extends CoreLivewire
 		}
 	}
 
-	public function save()
+	public function test()
 	{
+
 		if (!is_null($this->photo))
 		{
 			$this->validate([

@@ -32,7 +32,13 @@ $groupData = [
 Route::group($groupData, function ()
 {
 	Route::resource('/my', 'IndexController')->names('user.index');
+
 	Route::resource('/gallery', 'GalleryController')->names('user.gallery');
+	Route::get('/gallery/{id}/gallery', 'GalleryController@showGalleryPersone')->name('user.gallery.showGalleryPersone');
+
+
+	Route::resource('/news', 'NewsController')->names('user.news');
+
 
 });
 

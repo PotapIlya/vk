@@ -18,25 +18,48 @@ class GalleryRepository extends CoreRepository
 		return Model::class;
 	}
 
-	public function getAllUserImages()
+	public function getAllUserImages($userId)
 	{
-		$userId = Auth::id();
-
 		return $this->startConditions()
 			->select(['id', 'user_id', 'img'])
 			->where('user_id', $userId)
 			->get();
 	}
 
-	public function getCountImage($count)
+	public function getCountUserImage($userId, $count)
 	{
-		$userId = Auth::id();
-
-		return $this->startConditions()
+		$images = $this->startConditions()
 			->select(['id', 'user_id', 'img'])
 			->where('user_id', $userId)
 			->take($count)
 			->get();
+
+		return $images;
 	}
+
+	public function getAllImages()
+	{
+		$images = $this->startConditions()
+			->with('user')
+			->orderByDesc('id')
+			->get();
+
+		return $images;
+	}
+
+	public function getId($id)
+	{
+		$image =  parent::getId($id);
+
+
+		if ($image){
+			$image = $image->load(['comments', 'user']);
+		}
+
+		return $image;
+
+
+	}
+
 
 }

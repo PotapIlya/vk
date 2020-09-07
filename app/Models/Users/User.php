@@ -43,11 +43,19 @@ class User extends Authenticatable
     /** FUNCTIONS */
 
 
-	public function about()
+//	public function about()
+//	{
+//		return $this->hasOne('App\Models\Users\UserAbout', 'user_id', 'id');
+//	}
+	public function gallery()
 	{
-		return $this->hasOne('App\Models\Users\UserAbout', 'user_id', 'id');
+		return $this->hasMany(UserGallery::class, 'user_id', 'id');
 	}
 
+	public function comments()
+	{
+		return $this->hasMany(Comments::class, 'user_id', 'id');
+	}
 
 
 }

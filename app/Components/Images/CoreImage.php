@@ -2,7 +2,7 @@
 
 namespace App\Components\Images;
 
-use App\Models\Users\UserAbout;
+use App\Models\Users\User;
 use App\Models\Users\UserGallery;
 use Storage;
 use Auth;
@@ -69,7 +69,7 @@ abstract class CoreImage
 		$userId = Auth::id();
 
 		$path = $file->store($userId, $disk);
-		$update = UserAbout::where('user_id', $userId)->update([
+		$update = User::where('id', $userId)->update([
 			'img' => $path
 		]);
 		if ($update){

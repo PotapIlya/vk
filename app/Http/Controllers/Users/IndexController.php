@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Components\Images\ActionImages;
 use App\Http\Controllers\Users\BaseUserController;
 use App\Repositories\Users\GalleryRepository;
+use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -18,15 +19,18 @@ class IndexController extends BaseUserController
 
 	private $actionImage;
 	private $galleryRepository;
+	private $userRepository;
 
 	public function __construct(ActionImages $actionImages,
-								GalleryRepository $galleryRepository
+								GalleryRepository $galleryRepository,
+								UserRepository $userRepository
 	)
 	{
 		parent::__construct();
 
 		$this->actionImage = $actionImages;
 		$this->galleryRepository = $galleryRepository;
+		$this->userRepository = $userRepository;
 	}
 
     /**
@@ -39,9 +43,7 @@ class IndexController extends BaseUserController
     	$user = Auth::user();
 
 
-    	$images = $this->galleryRepository->getCountImage(4);
-
-    	if ($user) $user = $user->load('about');
+    	$images = $this->galleryRepository->getCountUserImage($user->id ,4);
 
 
 		return view('user.my.index', compact(
@@ -75,11 +77,23 @@ class IndexController extends BaseUserController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
     {
-        //
+    	if ($id == Auth::id()) {
+			return redirect()->route('user.index.index');
+		}
+
+
+    	$user = $this->userRepository->getId($id);
+		$images = $this->galleryRepository->getCountUserImage( $id ,4);
+
+//		dd($images);
+
+		return view('user.my.show', compact(
+			'user', 'images'
+		));
     }
 
     /**
@@ -91,7 +105,6 @@ class IndexController extends BaseUserController
     public function edit($id)
     {
     	$user = Auth::user();
-
 
     	return view('user.my.edit', compact(
     		'user'
@@ -107,20 +120,13 @@ class IndexController extends BaseUserController
      */
     public function update(Request $request, $id)
     {
-    	// add rules for request
-
-		$update = Auth::user()->update($request->all());
-		if (!$update) {
-			return redirect()->route('user.index.index')->withErrors(['msc' => self::ERROR]);
-		}
-
 
 
     	$image = $request->file('image');
     	if (!is_null($image))
 		{
 //			dd(12);
-			$userAbout = Auth::user()->about->img;
+			$userAbout = Auth::user()->img;
 			$this->actionImage->deleteAndUpload($image, $userAbout);
 		}
 

@@ -3,8 +3,9 @@
         <div class="d-flex justify-content-between">
             <div class="col-5 pl-0">
                <div style="position: relative">
-{{--                   @dd($user->about->img)--}}
-                   <img class="mw-100 h-auto" src="/storage/{{ $user->about->img ?? '../static/img/nophoto.png' }}" alt="">
+{{--                   @dd($user)--}}
+
+                   <img class="mw-100 h-auto" src="/storage/{{ $user->img ?? '../static/img/nophoto.png' }}" alt="">
                    <form style="position: absolute; bottom: 0; left: 0"
                          action="{{ route('user.index.update', $user->id ) }}"
                          class="d-flex justify-content-between align-items-center"
@@ -18,7 +19,7 @@
                    </form>
                </div>
                 <div class="my-1">
-                    <a class="w-100 btn btn-info" href="{{ route('user.index.edit', $user->login) }}">Редактировать</a>
+                    <a class="w-100 btn btn-info" href="{{ route('user.index.edit', $user->id) }}">Редактировать</a>
                 </div>
             </div>
             <div class="col-7">

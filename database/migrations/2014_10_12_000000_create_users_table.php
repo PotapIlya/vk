@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('first_name', 255);
             $table->string('last_name', 255);
 
+            $table->text('img')->default(null)->nullable();
+
 			$table->string('gender', 20)->default('on');
 
 			$table->string('family_status', 255)->default(null)->nullable();

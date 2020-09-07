@@ -17,7 +17,7 @@ class CreateUserAboutsTable extends Migration
 			$table->id();
 
 			$table->unsignedBigInteger('user_id')->unique();
-			$table->string('img', 255)->default(null)->nullable();
+//			$table->string('img', 255)->default(null)->nullable();
 
 			$table->timestamps();
 

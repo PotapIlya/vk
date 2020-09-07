@@ -1,7 +1,7 @@
 <div>
 
    <div class="d-flex align-items-center justify-content-between">
-       <h2>Мои фотограции</h2>
+       <h2>Фотографии {{ $user->first_name }}</h2>
        <a class="h5" href="{{ route('user.gallery.index') }}">Посмотреть все</a>
    </div>
 
@@ -10,11 +10,11 @@
 
         @foreach($images as $image)
 
-            <div class="col-3">
+            <a href="{{ route('user.gallery.show', $image->id) }}" class="col-3">
                 <div class="card w-100">
                     <img class="card-img-top" src="/storage/{{ $image->img }}" alt="Card image cap">
                 </div>
-            </div>
+            </a>
        @endforeach
 
     </div>
