@@ -33,14 +33,12 @@ class GalleryController extends BaseUserController
      */
     public function index()
     {
-    	$userId = Auth::id();
+//    	$userId = Auth::id();
+//
+//		$gallery = $this->galleryRepository->getAllImages($userId);
 
-		$gallery = $this->galleryRepository->getAllImages($userId);
 
-
-    	return view('user.gallery.index', compact(
-    		'gallery'
-		));
+    	return view('user.gallery.index');
     }
 
     /**
@@ -129,12 +127,6 @@ class GalleryController extends BaseUserController
 	 */
     public function destroy($imgId)
     {
-    	$delete = $this->uploadImage->deleteImg($imgId, Auth::id());
-    	if ($delete){
-    		return redirect()->back()->with(['success' => self::SUCCESS_DELETE]);
-		} else{
-			return redirect()->back()->withErrors(['msg' => self::ERROR]);
-		}
 
     }
 }

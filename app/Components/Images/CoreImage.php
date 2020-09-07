@@ -5,6 +5,7 @@ namespace App\Components\Images;
 use App\Models\Users\UserAbout;
 use App\Models\Users\UserGallery;
 use Storage;
+use Auth;
 
 abstract class CoreImage
 {
@@ -13,8 +14,9 @@ abstract class CoreImage
 //
 //	}
 
-	protected function uploadFile($file, $userId, $disk = 'public')
+	protected function uploadFile($file, $disk = 'public')
 	{
+		$userId = Auth::id();
 		$path = $file->store($userId, $disk);
 		$upload = UserGallery::create([
 			'user_id' => $userId,
@@ -27,9 +29,11 @@ abstract class CoreImage
 		}
 	}
 
-	protected function deleteFile($file, $userId, $disk = 'public')
+	protected function deleteFile($file,$disk = 'public')
 	{
 		$img = UserGallery::find($file);
+
+		$userId = Auth::id();
 
 		if ($img && $img->user_id === $userId){
 			$img->delete();
@@ -43,36 +47,35 @@ abstract class CoreImage
 		}
 	}
 
-	protected function deleteAndUpload($file, $userImage, $userId)
+	protected function deleteAndUpload($file, $userImage)
 	{
 		$disk = 'public';
-		if (is_null($userImage))
-		{
-			$path = $file->store($userId, $disk);
-			$upload = UserAbout::where('user_id', $userId)->update(['img' => $path]);
 
-			if ($upload){
-				return true;
+		if (is_null($userImage)) {
+			$this->UPDATE_deleteAndUpload($file);
+		}
+		else {
+			$delete = Storage::disk($disk)->delete($userImage);
+			if ($delete)
+			{
+				$this->UPDATE_deleteAndUpload($file);
 			} else{
 				return false;
 			}
 		}
-		else
-		{
-			$delete = Storage::disk($disk)->delete($userImage);
-			if ($delete)
-			{
-				$path = $file->store($userId, $disk);
-				$upload = UserAbout::where('user_id', $userId)->update(['img' => $path]);
-				if ($upload){
-					return true;
-				} else{
-					return false;
-				}
-			} else{
-				return false;
-			}
+	}
+	private function UPDATE_deleteAndUpload($file, $disk = 'public')
+	{
+		$userId = Auth::id();
 
+		$path = $file->store($userId, $disk);
+		$update = UserAbout::where('user_id', $userId)->update([
+			'img' => $path
+		]);
+		if ($update){
+			return true;
+		} else{
+			return false;
 		}
 	}
 

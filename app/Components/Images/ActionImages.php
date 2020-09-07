@@ -6,9 +6,9 @@ namespace App\Components\Images;
 
 class ActionImages extends CoreImage
 {
-	public function uploadImg($file, $userId)
+	public function uploadImg($file)
 	{
-		$upload = parent::uploadFile($file, $userId);
+		$upload = parent::uploadFile($file);
 		if ($upload){
 			return true;
 		} else{
@@ -17,9 +17,10 @@ class ActionImages extends CoreImage
 
 	}
 
-	public function deleteImg($imgId, $userId)
+	public function deleteImg($imgId)
 	{
-		$delete = parent::deleteFile($imgId, $userId);
+
+		$delete = parent::deleteFile($imgId);
 		if ($delete) {
 			return true;
 		} else{
@@ -27,9 +28,9 @@ class ActionImages extends CoreImage
 		}
 	}
 
-	public function deleteAndUpload($image, $userAbout, $userId)
+	public function deleteAndUpload($image, $userAbout)
 	{
-		parent::deleteAndUpload($image, $userAbout, $userId);
+		parent::deleteAndUpload($image, $userAbout);
 	}
 
 }

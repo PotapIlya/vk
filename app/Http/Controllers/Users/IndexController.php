@@ -39,9 +39,7 @@ class IndexController extends BaseUserController
     	$user = Auth::user();
 
 
-    	$images = $this->galleryRepository->getCountImage($user->id, 4);
-
-
+    	$images = $this->galleryRepository->getCountImage(4);
 
     	if ($user) $user = $user->load('about');
 
@@ -121,8 +119,9 @@ class IndexController extends BaseUserController
     	$image = $request->file('image');
     	if (!is_null($image))
 		{
+//			dd(12);
 			$userAbout = Auth::user()->about->img;
-			$this->actionImage->deleteAndUpload($image, $userAbout, $id);
+			$this->actionImage->deleteAndUpload($image, $userAbout);
 		}
 
     	return redirect()->route('user.index.index')->with(['success' => self::SAVE]);

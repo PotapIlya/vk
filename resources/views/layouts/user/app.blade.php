@@ -11,7 +11,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app_modules.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @livewireStyles
+    <livewire:styles>
 </head>
 <body>
     <div id="app">
@@ -28,6 +28,6 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    @livewireScripts
+    <livewire:scripts>
 </body>
 </html>
