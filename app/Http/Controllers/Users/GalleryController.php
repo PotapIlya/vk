@@ -20,7 +20,8 @@ class GalleryController extends BaseUserController
 
 	public function __construct(
 								GalleryRepository $galleryRepository,
-								ActionImages $uploadImages, UserRepository $userRepository
+								ActionImages $uploadImages,
+								UserRepository $userRepository
 	)
 	{
 		parent::__construct();
@@ -38,7 +39,15 @@ class GalleryController extends BaseUserController
     public function index()
     {
 
-    	return view('user.gallery.index');
+		$userId = Auth::id();
+
+		$gallery = $this->galleryRepository->getAllUserImages($userId);
+
+//		dd($images);
+
+    	return view('user.gallery.index', compact(
+    		'gallery'
+		));
     }
 
     /**
@@ -59,22 +68,21 @@ class GalleryController extends BaseUserController
      */
     public function store(Request $request)
     {
-    	dd('store');
-//    	$image = $request->file('image');
-//
-//
-//		if (!is_null($image))
-//		{
-//			$upload = $this->uploadImage->uploadImg($image);
-//			if (!$upload){
-//				return redirect()->back()->withErrors(['msg' => self::ERROR]);
-//			}
-//
-//			return redirect()->route('user.gallery.index')->with(['success' => self::SUCCESS_UPLOAD]);
-//		}
-//		else{
-//			return redirect()->back()->withErrors(['msg' => self::IMG_NO_SELECTED]);
-//		}
+
+    	$image = $request->file('image');
+
+		if (!is_null($image))
+		{
+			$upload = $this->uploadImage->uploadImg($image);
+			if (!$upload){
+				return redirect()->back()->withErrors(['msg' => self::ERROR]);
+			}
+
+			return redirect()->route('user.gallery.index')->with(['success' => self::SUCCESS_UPLOAD]);
+		}
+		else{
+			return redirect()->back()->withErrors(['msg' => self::IMG_NO_SELECTED]);
+		}
     }
 
     /**
@@ -144,6 +152,12 @@ class GalleryController extends BaseUserController
 	 */
     public function destroy($imgId)
     {
-
+    	$delete = $this->uploadImage->deleteImg($imgId);
+    	if ($delete)
+		{
+			return redirect()->back()->with(['success' => self::SUCCESS_DELETE]);
+		} else{
+			return redirect()->back()->withErrors(['error' => self::ERROR]);
+		}
     }
 }

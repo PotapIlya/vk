@@ -9,7 +9,17 @@
                 </div>
                 <div class="my-1">
                     <a class="w-100 btn btn-info mb-1" href="{{ route('user.index.edit', $user->id) }}">Написать сообщение</a>
-                    <a class="w-100 btn btn-info" href="{{ route('user.index.edit', $user->id) }}">Добавить в друзья</a>
+
+                    @if($userSubscribe)
+                        <button disabled class="w-100 btn btn-info">Ваша завявка уже отправлена</button>
+                    @elseif($userPending)
+                        <button class="w-100 btn btn-info">Принять в друзья</button>
+                    @elseif($isFriend)
+                        <button disabled class="w-100 btn btn-info">Это ваш друг</button>
+                    @else
+                        <a class="w-100 btn btn-info" href="{{ route('user.index.edit', $user->id) }}">Добавить в друзья</a>
+                    @endif
+
                 </div>
             </div>
             <div class="col-7">

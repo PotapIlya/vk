@@ -26,6 +26,8 @@ class CommentComponent extends CoreLivewire
 			->with(['comments', 'user'])
 			->first();
 
+
+
 //		dd($this->comments);
 //    	$this->comments = $this->galleryRepository->getId($this->gallery_id);
 

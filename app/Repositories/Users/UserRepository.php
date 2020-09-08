@@ -6,6 +6,7 @@ namespace App\Repositories\Users;
 
 use App\Repositories\CoreRepository;
 use App\Models\Users\User as Model;
+use Auth;
 
 class UserRepository extends CoreRepository
 {
@@ -16,11 +17,26 @@ class UserRepository extends CoreRepository
 	}
 
 
-//	public function getId($id)
-//	{
-//		return parent::getId($id);
-//
-//	}
+	public function getUserFriends()
+	{
+//		$id = Auth::id();
+//		$user = parent::getId($id);
+
+//		$user->friends = $user->friends();
+//		if ($user) $user = $user->load('friends');
+//		dd($user->friends());
+
+		return Auth::user()->friends();
+
+	}
+
+	public function getUserFriendsRequest()
+	{
+		$user =  Auth::user()->friendRequestPending();
+
+//		dd($user);
+		return $user;
+	}
 
 
 }

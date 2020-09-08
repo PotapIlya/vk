@@ -40,6 +40,9 @@ Route::group($groupData, function ()
 	Route::resource('/news', 'NewsController')->names('user.news');
 
 
+	Route::resource('/friends', 'FriendsController')->names('user.friends');
+
+
 });
 
 

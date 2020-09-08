@@ -7,6 +7,8 @@ use App\Http\Livewire\CoreLivewire;
 
 use App\Repositories\Users\GalleryRepository;
 use Auth;
+
+
 use Livewire\WithFileUploads;
 
 
@@ -37,8 +39,17 @@ class GalleryComponent extends CoreLivewire
 		}
 	}
 
-	public function test()
+
+	public function updatedPhoto()
 	{
+		$this->validate([
+			'photo' => 'image|max:1024',
+		]);
+	}
+
+	public function save()
+	{
+
 
 		if (!is_null($this->photo))
 		{
@@ -47,6 +58,7 @@ class GalleryComponent extends CoreLivewire
 			]);
 
 			$upload = $this->actionImages->uploadImg($this->photo);
+			$upload = true;
 			if ($upload)
 			{
 				session()->flash('success', self::SAVE);

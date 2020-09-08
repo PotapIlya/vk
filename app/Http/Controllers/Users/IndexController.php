@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Components\Images\ActionImages;
 use App\Http\Controllers\Users\BaseUserController;
+use App\Models\Users\Friends;
 use App\Repositories\Users\GalleryRepository;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
@@ -89,10 +90,29 @@ class IndexController extends BaseUserController
     	$user = $this->userRepository->getId($id);
 		$images = $this->galleryRepository->getCountUserImage( $id ,4);
 
-//		dd($images);
+
+		$friends = Auth::user()->friends();
+
+//		foreach ($friends as $friend)
+//		{
+//			if ($friend->id == $id)
+//			{
+//				return true;
+//			} else{
+//				return false;
+//			}
+//		}
+
+		// Запрос о дружбе
+		$userSubscribe = Auth::user()->hasFriendsRequestReceived($id);
+		$userPending = Auth::user()->hasFriendsRequestPending($id);
+
+
+		$isFriend = Auth::user()->isFriendWith($id);
+
 
 		return view('user.my.show', compact(
-			'user', 'images'
+			'user', 'images', 'userSubscribe', 'userPending', 'isFriend'
 		));
     }
 

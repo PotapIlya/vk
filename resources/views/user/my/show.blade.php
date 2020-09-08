@@ -14,6 +14,7 @@
             </div>
 
 
+
             <div class="row align-items-center justify-content-between">
 
                 @foreach($images as $image)

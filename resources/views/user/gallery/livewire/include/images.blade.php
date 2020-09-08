@@ -8,10 +8,16 @@
                     <img class="mw-100" src="/storage/{{ $image->img }}" alt="">
                 </a>
 
-                <button
-                        wire:click="destroy({{ $image->id }})"
-                        style="position: absolute; top: 0; right: 0;"
-                        class="btn-danger">&#10008;</button>
+
+                <form action="{{ route('user.gallery.destroy', $image->id) }}" method="POST">
+                    @csrf
+                    @method("DELETE")
+                    <button
+                            style="position: absolute; top: 0; right: 0; z-index: 10000000000"
+                            class="btn-danger">&#10008;</button>
+                </form>
+
+
             </div>
         </div>
 

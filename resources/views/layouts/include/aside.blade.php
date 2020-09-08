@@ -16,7 +16,7 @@
             </a>
         </li>
         <li class="mb-2">
-            <a class="h4" href="#">
+            <a class="h4" href="{{ route('user.friends.index') }}">
                 Друзья
             </a>
         </li>
