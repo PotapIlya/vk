@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Users;
 use App\Components\Images\ActionImages;
 use App\Http\Controllers\Controller;
 use App\Models\Users\User;
+use App\Repositories\Users\CommentRepository;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
 use App\Repositories\Users\GalleryRepository;
@@ -17,11 +18,13 @@ class GalleryController extends BaseUserController
 	private $galleryRepository;
 	private $uploadImage;
 	private $userRepository;
+	private $commentRepository;
 
 	public function __construct(
 								GalleryRepository $galleryRepository,
 								ActionImages $uploadImages,
-								UserRepository $userRepository
+								UserRepository $userRepository,
+								CommentRepository $commentRepository
 	)
 	{
 		parent::__construct();
@@ -29,6 +32,7 @@ class GalleryController extends BaseUserController
 		$this->galleryRepository = $galleryRepository;
 		$this->uploadImage = $uploadImages;
 		$this->userRepository = $userRepository;
+		$this->commentRepository = $commentRepository;
 	}
 
 	/**
@@ -66,8 +70,11 @@ class GalleryController extends BaseUserController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
-    {
+	public function store(Request $request)
+	{
+//		return $request['data'];
+
+		return 123;
 
     	$image = $request->file('image');
 
@@ -85,6 +92,12 @@ class GalleryController extends BaseUserController
 		}
     }
 
+
+    public function storeComment(Request $request)
+	{
+		return 123;
+	}
+
     /**
      * Display the specified resource.
      *
@@ -99,9 +112,12 @@ class GalleryController extends BaseUserController
 			return redirect()->back()->withErrors(['msg' => self::ERROR]);
 		}
 
+		$comments = $this->commentRepository->getCommentId($id);
+
+
 
 		return view('user.gallery.show', compact(
-			'image'
+			'image', 'comments'
 		));
 
     }

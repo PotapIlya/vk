@@ -8,10 +8,6 @@ use Auth;
 
 class GalleryRepository extends CoreRepository
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
 
 	public function getModelClass()
 	{

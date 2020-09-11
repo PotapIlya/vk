@@ -36,11 +36,10 @@ Route::group($groupData, function ()
 	Route::resource('/gallery', 'GalleryController')->names('user.gallery');
 	Route::get('/gallery/{id}/gallery', 'GalleryController@showGalleryPersone')->name('user.gallery.showGalleryPersone');
 
-
 	Route::resource('/news', 'NewsController')->names('user.news');
 
-
 	Route::resource('/friends', 'FriendsController')->names('user.friends');
+//	Route::get('/friends/{user}', 'FriendsController@addFriend')->name('user.friends.add');
 
 
 });

@@ -122,14 +122,14 @@ class User extends Authenticatable
 		return $this->friendsOf()->attach($id);
 	}
 //
-//	// Принять запрос на дружбу
-//	public function acceptFriendRequest($id)
+
+// Принять запрос дружбы
+//	public function acceptFriendRequest()
 //	{
 //		return $this->friendRequest()->where('id', $id)->first()->pivot()->update([
 //			'accepted' => true
 //		]);
 //	}
-
 
 
 }

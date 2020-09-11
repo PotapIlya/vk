@@ -28,7 +28,10 @@
                        likes
                    </div>
                    <div>
-                       <livewire:user.comment-component :id="$image->id">
+                       <comment-component
+                               :comments="{{ json_encode($comments) }}"
+                       />
+{{--                       <livewire:user.comment-component :id="$image->id">--}}
                    </div>
                </div>
            </div>

@@ -17,7 +17,8 @@ abstract class CoreImage
 	protected function uploadFile($file, $disk = 'public')
 	{
 		$userId = Auth::id();
-		$path = $file->store($userId, $disk);
+//		$path = $file->store($userId, $disk);
+		$path = Storage::disk($disk)->put($userId, $file);
 		$upload = UserGallery::create([
 			'user_id' => $userId,
 			'img' => $path
@@ -29,7 +30,7 @@ abstract class CoreImage
 		}
 	}
 
-	protected function deleteFile($file,$disk = 'public')
+	protected function deleteFile($file, $disk = 'public')
 	{
 		$img = UserGallery::find($file);
 
@@ -44,6 +45,8 @@ abstract class CoreImage
 			} else{
 				return false;
 			}
+		} else{
+			return false;
 		}
 	}
 
@@ -68,7 +71,8 @@ abstract class CoreImage
 	{
 		$userId = Auth::id();
 
-		$path = $file->store($userId, $disk);
+//		$path = $file->store($userId, $disk);
+		$path = Storage::disk($disk)->put($userId, $file);
 		$update = User::where('id', $userId)->update([
 			'img' => $path
 		]);

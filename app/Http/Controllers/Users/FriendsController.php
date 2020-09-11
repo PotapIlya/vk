@@ -107,7 +107,12 @@ class FriendsController extends BaseUserController
 
 //			$frend = Friends::where('user_id', 2)->get();
 
-			\Auth::user()->addFriend($friendId);
+//			\Auth::user()->addFriend($friendId);
+
+
+//			dd( \Auth::user()->addFriend($friendId) );
+
+
 //			dd($frend);
 
 			return redirect()->back()->with(['success' => 'da']);
@@ -116,6 +121,13 @@ class FriendsController extends BaseUserController
     		return redirect()->back()->withErrors(['msg' => self::ERROR]);
 		}
     }
+    public function addFriend($id)
+	{
+
+		dd( $id );
+
+		\Auth::user()->addFriend($id);
+	}
 
     /**
      * Remove the specified resource from storage.

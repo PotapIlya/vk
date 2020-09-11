@@ -60,12 +60,13 @@
                 </a>
                 <div class="col-4 d-flex flex-column">
 
-                    <form action="{{ route('user.friends.update', $friend->id) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <button class="btn btn-success">Принять</button>
-                    </form>
+{{--                    <form action="{{ route('user.friends.update', $friend->id) }}" method="POST">--}}
+{{--                        @csrf--}}
+{{--                        @method('PATCH')--}}
+{{--                        <button class="btn btn-success">Принять</button>--}}
+{{--                    </form>--}}
 
+                    <a class="btn btn-success" href="{{ route('user.friends.add', $friend->id) }}">Принять</a>
                 </div>
             </div>
 

@@ -145,7 +145,7 @@ class IndexController extends BaseUserController
     	$image = $request->file('image');
     	if (!is_null($image))
 		{
-//			dd(12);
+//			dd($image);
 			$userAbout = Auth::user()->img;
 			$this->actionImage->deleteAndUpload($image, $userAbout);
 		}
