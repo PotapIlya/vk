@@ -10,7 +10,7 @@ class ActionImages extends CoreImage
 	{
 		$upload = parent::uploadFile($file);
 		if ($upload){
-			return true;
+			return $upload;
 		} else{
 			return false;
 		}
@@ -22,15 +22,15 @@ class ActionImages extends CoreImage
 
 		$delete = parent::deleteFile($imgId);
 		if ($delete) {
-			return true;
+			return $delete;
 		} else{
 			return false;
 		}
 	}
 
-	public function deleteAndUpload($image, $userAbout)
+	public function deleteAndUpload($image)
 	{
-		parent::deleteAndUpload($image, $userAbout);
+		return parent::deleteAndUpload($image);
 	}
 
 }

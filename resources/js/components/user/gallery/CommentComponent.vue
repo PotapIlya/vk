@@ -1,18 +1,17 @@
 <template>
 	<div>
-		1234
+	
 		
-		<div class="input-group w-100 mt-5">
+		<form method="post"  @submit.prevent="store" class="input-group w-100 mt-5">
 			<textarea v-model="input" style="resize: none" class="form-control w-100" aria-label="With textarea"></textarea>
-			<button @click="store" class="btn btn-info w-100 mt-2">Отправить</button>
-		</div>
-
-		<ul class="list-inline">
-			
-			
+			<button type="submit" class="btn btn-info w-100 mt-2">Отправить</button>
+		</form>
+		
+		
+		<ul v-if="frontComments.length" class="list-inline">
 			
 		   <li
-				   v-for="comment in comments"
+				   v-for="comment in frontComments"
 				   class="my-3">
 			   <a :href="'/my/'+comment.user.id" class="d-flex justify-content-between align-items-center">
 				   <div class="col-7 pl-0">
@@ -28,35 +27,47 @@
 				  {{ comment.text }}
 			   </p>
 			</li>
-	
 			
 		</ul>
+		
 	</div>
 </template>
 
 <script>
     import axios from "axios";
-
     export default {
         name: "CommentComponent",
-		props: ['comments'],
+		props: [
+		    'image_id',
+			'comments'
+		],
 		data: () => ({
-            input: null,
-			url: 'api/gallery/comment',
+			id : 6,
+			input: null,
+			frontComments: [],
+			url: '/api/gallery/comment',
 		}),
 		mounted() {
-            // console.log(this.comments)
+            this.id = this.image_id;
+            this.frontComments = this.comments;
+				
+            // console.log(this.frontComments)
         },
         methods:{
             store()
 			{
 			    if (this.input !== null)
 				{
-                    axios.get(this.url)
-                        .then(response => {
-                            console.log(response)
+                    axios.post(this.url, {
+							id : this.id,
+							text : this.input
+						})
+                        .then(response =>
+						{
+                            // console.log(response.data)
+						    this.frontComments.push(response.data)
                         })
-					
+                    // console.log(this.frontComments)
                     this.input = '';
 				}
 			}

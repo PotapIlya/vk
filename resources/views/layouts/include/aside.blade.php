@@ -1,7 +1,7 @@
 <aside class="aside col-2 pl-0">
     <ul class="list-inline">
         <li class="mb-2">
-            <a class="h4" href="{{ route('user.index.index') }}">
+            <a class="h4" href="{{ route('user.my.index') }}">
                 Моя страница
             </a>
         </li>

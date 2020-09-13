@@ -10,7 +10,7 @@
 
             <div class="d-flex align-items-center justify-content-between">
                 <h2>Фотографии {{ $user->first_name }}</h2>
-                <a class="h5" href="{{ route('user.gallery.showGalleryPersone', $user->id) }}">Посмотреть все</a>
+                <a class="h5" href="{{ route('user.gallery.showGalleryPerson', $user->id) }}">Посмотреть все</a>
             </div>
 
 

@@ -30,9 +30,13 @@ class FriendsController extends BaseUserController
 
 
     	$friends = $this->userRepository->getUserFriends();
+
     	$friendsRequest = $this->userRepository->getUserFriendsRequest();
 
-    	$subscriber = \Auth::user()->friendRequest();
+
+//    	$subscriber = \Auth::user()->friendRequest();
+
+
 
 //    	dd($subscriber->friendRequest());
 
@@ -41,9 +45,46 @@ class FriendsController extends BaseUserController
 
 
     	return view('user.friends.index', compact(
-    		'friends', 'friendsRequest', 'subscriber'
+    		'friends', 'friendsRequest'
 		));
     }
+
+	public function requests()
+	{
+		$friendsRequest = $this->userRepository->getUserFriendsRequest();
+
+
+
+		return view('user.friends.requests', compact(
+			'friendsRequest'
+		));
+	}
+
+
+    public function subscribe()
+	{
+
+		$friendsRequest = $this->userRepository->getUserFriendsRequest();
+		$subscriber = \Auth::user()->friendRequest();
+
+		return view('user.friends.subscribe', compact(
+			'friendsRequest', 'subscriber'
+		));
+	}
+
+	public function search()
+	{
+
+		$friendsRequest = $this->userRepository->getUserFriendsRequest();
+
+		$allUser = $this->userRepository->getAllUser();
+
+		return view('user.friends.search', compact(
+			'friendsRequest',
+			'allUser'
+		));
+	}
+
 
     /**
      * Show the form for creating a new resource.

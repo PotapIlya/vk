@@ -4,19 +4,16 @@ namespace App\Http\Controllers\Users;
 
 use App\Components\Images\ActionImages;
 use App\Http\Controllers\Users\BaseUserController;
+use App\Http\Requests\Users\IndexEditRequest;
 use App\Models\Users\Friends;
 use App\Repositories\Users\GalleryRepository;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Validation\Rule;
 
 class IndexController extends BaseUserController
 {
-	const SUCCESS_UPLOAD = 'Фотография добавлена';
-	const SUCCESS_DELETE = 'Удалено';
-	const ERROR = 'Ой, что то пошло не так';
-	const IMG_NO_SELECTED = 'Вы не выбрали изображение';
-
 
 	private $actionImage;
 	private $galleryRepository;
@@ -33,6 +30,9 @@ class IndexController extends BaseUserController
 		$this->galleryRepository = $galleryRepository;
 		$this->userRepository = $userRepository;
 	}
+
+
+
 
     /**
      * Display a listing of the resource.
@@ -83,7 +83,7 @@ class IndexController extends BaseUserController
     public function show($id)
     {
     	if ($id == Auth::id()) {
-			return redirect()->route('user.index.index');
+			return redirect()->route('user.my.index');
 		}
 
 
@@ -91,17 +91,8 @@ class IndexController extends BaseUserController
 		$images = $this->galleryRepository->getCountUserImage( $id ,4);
 
 
-		$friends = Auth::user()->friends();
+//		$friends = Auth::user()->friends();
 
-//		foreach ($friends as $friend)
-//		{
-//			if ($friend->id == $id)
-//			{
-//				return true;
-//			} else{
-//				return false;
-//			}
-//		}
 
 		// Запрос о дружбе
 		$userSubscribe = Auth::user()->hasFriendsRequestReceived($id);
@@ -140,18 +131,65 @@ class IndexController extends BaseUserController
      */
     public function update(Request $request, $id)
     {
+    	return 123;
+//    	$image = $request->file('image');
+//    	if (!is_null($image))
+//		{
+////			dd($image);
+//			$userAbout = Auth::user()->img;
+//			$this->actionImage->deleteAndUpload($image, $userAbout);
+//		}
+//
+//    	return redirect()->route('user.index.index')->with(['success' => self::SAVE]);
+    }
 
 
-    	$image = $request->file('image');
+    public function updateImage(Request $request)
+	{
+		$image = $request->image;
     	if (!is_null($image))
 		{
-//			dd($image);
-			$userAbout = Auth::user()->img;
-			$this->actionImage->deleteAndUpload($image, $userAbout);
+			$update = $this->actionImage->deleteAndUpload($image);
+			if ($update){
+				return response()->json(['success' => $update]);
+			} else{
+				return response()->json(self::ERROR);
+			}
+		} else{
+			return response()->json(self::ERROR);
+		}
+	}
+
+
+	public function updateEdit(Request $request)
+	{
+		$userId = Auth::id();
+
+		$validation = \Validator::make($request->all() ,[
+			'login' => [
+				Rule::unique('users')->ignore($userId),
+				'required'
+			],
+			'first_name' => 'required',
+			'last_name' => 'required|min:4',
+		]);
+		if ($validation->fails())
+		{
+			return ['error' => $validation->errors()];
 		}
 
-    	return redirect()->route('user.index.index')->with(['success' => self::SAVE]);
-    }
+
+		$user = $this->userRepository->getId($userId);
+
+		$update = $user->update($request->all());
+		if ($update)
+		{
+			return ['success' => $request->all()];
+		} else{
+			return false;
+		}
+	}
+
 
     /**
      * Remove the specified resource from storage.

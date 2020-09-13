@@ -5,21 +5,13 @@
                <div style="position: relative">
 {{--                   @dd($user)--}}
 
-                   <img class="mw-100 h-auto" src="/storage/{{ $user->img ?? '../static/img/nophoto.png' }}" alt="">
-                   <form style="position: absolute; bottom: 0; left: 0"
-                         action="{{ route('user.index.update', $user->id ) }}"
-                         class="d-flex justify-content-between align-items-center"
-                         enctype="multipart/form-data"
-                         method="POST"
-                   >
-                       @method('PATCH')
-                       @csrf
-                       <input name="image" type="file">
-                       <button type="submit">Сохранить</button>
-                   </form>
+                   <image-component
+                           :user="{{ json_encode($user) }}"
+                   />
+
                </div>
                 <div class="my-1">
-                    <a class="w-100 btn btn-info" href="{{ route('user.index.edit', $user->id) }}">Редактировать</a>
+                    <a class="w-100 btn btn-info" href="{{ route('user.my.edit', $user->id) }}">Редактировать</a>
                 </div>
             </div>
             <div class="col-7">

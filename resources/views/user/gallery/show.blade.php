@@ -12,7 +12,7 @@
                    <img class="mw-100" src="/storage/{{ $image->img }}" alt="">
                </div>
                <div class="col">
-                   <a href="{{ route('user.index.show', $image->user->id) }}" class="d-flex align-items-center  text-center">
+                   <a href="{{ route('user.my.show', $image->user->id) }}" class="d-flex align-items-center  text-center">
                        <div class="mr-3 col-4">
                            <img style="border-radius: 50%" class="mw-100 h-auto" src="/storage/{{ $image->user->img ?? '../static/img/nophoto.png' }}" alt="">
                        </div>
@@ -29,6 +29,7 @@
                    </div>
                    <div>
                        <comment-component
+                               :image_id="{{ json_encode($image->id) }}"
                                :comments="{{ json_encode($comments) }}"
                        />
 {{--                       <livewire:user.comment-component :id="$image->id">--}}

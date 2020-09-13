@@ -38,5 +38,11 @@ class UserRepository extends CoreRepository
 		return $user;
 	}
 
+	public function getAllUser()
+	{
+		return $this->startConditions()
+			->where('id', '!=', Auth::id())
+			->get();
+	}
 
 }

@@ -14,7 +14,7 @@
                     <div class="col-1">
                         <img style="border-radius: 50%" class="mw-100 h-auto" src="/storage/{{ $image->img }}" alt="">
                     </div>
-                    <a href="{{ route('user.index.show', $image->user->id) }}">
+                    <a href="{{ route('user.my.show', $image->user->id) }}">
                         <h3>
                             {{ $image->user->first_name }} {{ $image->user->last_name }}
                         </h3>

@@ -23,6 +23,9 @@ window.Vue = require('vue');
 Vue.component('gallery-component', require('./components/user/gallery/GalleryComponent').default);
 Vue.component('comment-component', require('./components/user/gallery/CommentComponent').default);
 
+Vue.component('edit-component', require('./components/user/my/EditComponent').default);
+Vue.component('image-component', require('./components/user/my/ImageComponent').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

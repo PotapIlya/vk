@@ -24,7 +24,11 @@ abstract class CoreImage
 			'img' => $path
 		]);
 		if ($upload){
-			return true;
+			return [
+				'id' => $upload->id,
+				'img' => $path,
+				'user_id' => $userId,
+			];
 		} else{
 			return false;
 		}
@@ -50,18 +54,31 @@ abstract class CoreImage
 		}
 	}
 
-	protected function deleteAndUpload($file, $userImage)
+	protected function deleteAndUpload($file)
 	{
 		$disk = 'public';
+		$userImage = Auth::user()->img;
 
 		if (is_null($userImage)) {
-			$this->UPDATE_deleteAndUpload($file);
+			$update = $this->UPDATE_deleteAndUpload($file);
+			if ($update)
+			{
+				return $update;
+			} else{
+				return false;
+			}
 		}
-		else {
+		else
+		{
 			$delete = Storage::disk($disk)->delete($userImage);
 			if ($delete)
 			{
-				$this->UPDATE_deleteAndUpload($file);
+				$update = $this->UPDATE_deleteAndUpload($file);
+				if ($update) {
+					return $update;
+				} else{
+					return false;
+				}
 			} else{
 				return false;
 			}
@@ -77,7 +94,7 @@ abstract class CoreImage
 			'img' => $path
 		]);
 		if ($update){
-			return true;
+			return $path;
 		} else{
 			return false;
 		}

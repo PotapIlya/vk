@@ -4,7 +4,8 @@
 @section('content')
 
 
-    <livewire:user.index-component>
-
+    <edit-component
+        :user="{{ json_encode($user) }}"
+    />
 
 @endsection

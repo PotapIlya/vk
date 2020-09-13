@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Components\Images\ActionImages;
 use App\Http\Controllers\Controller;
+use App\Models\Users\Comments;
 use App\Models\Users\User;
 use App\Repositories\Users\CommentRepository;
 use App\Repositories\Users\UserRepository;
@@ -21,13 +22,15 @@ class GalleryController extends BaseUserController
 	private $commentRepository;
 
 	public function __construct(
+
+
 								GalleryRepository $galleryRepository,
 								ActionImages $uploadImages,
 								UserRepository $userRepository,
 								CommentRepository $commentRepository
 	)
 	{
-		parent::__construct();
+//		parent::__construct();
 
 		$this->galleryRepository = $galleryRepository;
 		$this->uploadImage = $uploadImages;
@@ -72,11 +75,12 @@ class GalleryController extends BaseUserController
      */
 	public function store(Request $request)
 	{
-//		return $request['data'];
 
-		return 123;
+    }
 
-    	$image = $request->file('image');
+    public function storeImage(Request $request)
+	{
+		$image = $request->image;
 
 		if (!is_null($image))
 		{
@@ -85,17 +89,42 @@ class GalleryController extends BaseUserController
 				return redirect()->back()->withErrors(['msg' => self::ERROR]);
 			}
 
-			return redirect()->route('user.gallery.index')->with(['success' => self::SUCCESS_UPLOAD]);
+			return response()->json(['success' => $upload]);
 		}
 		else{
 			return redirect()->back()->withErrors(['msg' => self::IMG_NO_SELECTED]);
 		}
-    }
+
+
+	}
 
 
     public function storeComment(Request $request)
 	{
-		return 123;
+		if (!is_null($request->id) && !is_null($request->text))
+		{
+			$userId = Auth::id();
+
+			$upload = Comments::create([
+				'user_id' => $userId,
+				'gallery_id' => $request->id,
+				'text' => $request->text,
+			]);
+
+			if($upload)
+			{
+				$user = $this->userRepository->getId($userId);
+				return [
+					'text' => $request->text,
+					'user' => $user,
+				];
+			}
+			else{
+				return self::ERROR;
+			}
+		} else{
+			return self::ERROR.' нет id или text';
+		}
 	}
 
     /**
@@ -107,14 +136,14 @@ class GalleryController extends BaseUserController
      */
     public function show($id)
     {
+
     	$image = $this->galleryRepository->getId($id);
 		if (!$image){
-			return redirect()->back()->withErrors(['msg' => self::ERROR]);
+			return abort(404);
+//			return redirect()->back()->withErrors(['msg' => self::ERROR]);
 		}
 
 		$comments = $this->commentRepository->getCommentId($id);
-
-
 
 		return view('user.gallery.show', compact(
 			'image', 'comments'
@@ -123,10 +152,8 @@ class GalleryController extends BaseUserController
     }
 
 
-    public function showGalleryPersone($id)
+    public function showGalleryPerson($id)
 	{
-
-
 		$userImages = $this->galleryRepository->getAllUserImages( $id );
 
 
@@ -163,17 +190,21 @@ class GalleryController extends BaseUserController
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param $imgId
+	 * @param $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-    public function destroy($imgId)
+    public function destroy($id)
     {
-    	$delete = $this->uploadImage->deleteImg($imgId);
-    	if ($delete)
-		{
-			return redirect()->back()->with(['success' => self::SUCCESS_DELETE]);
-		} else{
-			return redirect()->back()->withErrors(['error' => self::ERROR]);
-		}
+
     }
+    public function destroyImage(Request $request)
+	{
+		$delete = $this->uploadImage->deleteImg($request->id);
+		if ($delete)
+		{
+			return response()->json(['success' => $request->id]);
+		} else{
+			return response()->json(['error' => self::ERROR]);
+		}
+	}
 }
