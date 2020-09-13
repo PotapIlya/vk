@@ -7,6 +7,7 @@ use App\Models\Users\Friends;
 use App\Models\Users\User;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
+use Auth;
 
 class FriendsController extends BaseUserController
 {
@@ -27,11 +28,19 @@ class FriendsController extends BaseUserController
      */
     public function index()
     {
+		$user = Auth::user();
 
 
-    	$friends = $this->userRepository->getUserFriends();
+//		dd($user->friendRequestPending());
 
-    	$friendsRequest = $this->userRepository->getUserFriendsRequest();
+//    	$friends = $this->userRepository->getUserFriends();
+//    	$friendsRequest = $this->userRepository->getUserFriendsRequest();
+
+		$friends = $user->friends();
+		$friendsRequest = $user->friendRequestPending();
+
+//		dd($friendsRequest);
+
 
 
 //    	$subscriber = \Auth::user()->friendRequest();
@@ -51,8 +60,10 @@ class FriendsController extends BaseUserController
 
 	public function requests()
 	{
-		$friendsRequest = $this->userRepository->getUserFriendsRequest();
+		$user = Auth::user();
 
+		$friendsRequest = $user->friendRequestPending();
+//		$friendsRequest = $this->userRepository->getUserFriendsRequest();
 
 
 		return view('user.friends.requests', compact(
@@ -63,8 +74,10 @@ class FriendsController extends BaseUserController
 
     public function subscribe()
 	{
+		$user = Auth::user();
 
-		$friendsRequest = $this->userRepository->getUserFriendsRequest();
+		$friendsRequest = $user->friendRequestPending();
+//		$friendsRequest = $this->userRepository->getUserFriendsRequest();
 		$subscriber = \Auth::user()->friendRequest();
 
 		return view('user.friends.subscribe', compact(
@@ -74,8 +87,9 @@ class FriendsController extends BaseUserController
 
 	public function search()
 	{
-
-		$friendsRequest = $this->userRepository->getUserFriendsRequest();
+		$user = Auth::user();
+		$friendsRequest = $user->friendRequestPending();
+//		$friendsRequest = $this->userRepository->getUserFriendsRequest();
 
 		$allUser = $this->userRepository->getAllUser();
 
@@ -85,6 +99,72 @@ class FriendsController extends BaseUserController
 		));
 	}
 
+
+	public function postAddFriend(Request $request)
+	{
+		$id = $request->data;
+		$user = $this->userRepository->getId($id);
+		if (!$user) {
+			return response()->json(['error' => self::ERROR]);
+		}
+
+		if ( Auth::user()->hasFriendsRequestPending($user->id)
+			|| $user->hasFriendsRequestPending(Auth::id()) )
+		{
+			return response()->json(['error' => 'Пользователю отправлен запрос в друзья']);
+		}
+		if ( Auth::user()->isFriendWith($id) )
+		{
+			return response()->json(['error' => 'Пользователь уже в друзьях']);
+		}
+
+
+		$add = Auth::user()->addFriend($user->id);
+		return response()->json(['success' => 123]);
+
+//		if ($add)
+//		{
+//			return response()->json(['success' => 123]);
+//		} else{
+//			return response()->json(['error' => self::ERROR]);
+//		}
+
+	}
+	public function postAccept(Request $request)
+	{
+		$id = $request->data;
+		$user = $this->userRepository->getId($id);
+		if (!$user) {
+			return response()->json(['error' => self::ERROR]);
+		}
+
+		Auth::user()->acceptFriendRequest($id);
+		return response()->json(['success' => 123]);
+	}
+
+	public function postDelete(Request $request)
+	{
+		$id = $request->data;
+		$user = $this->userRepository->getId($id);
+		if (!$user) {
+			return redirect()->back()->withErrors(['msg' => self::ERROR]);
+		}
+		if ($request->type === 'subscribe')
+		{
+			Auth::user()->deleteFriend($id);
+		}
+//		if ($request->type === 'subscribe')
+//		{
+//			Auth::user()->deleteSubscribe($id);
+//		}
+//		if ($request->type === 'delete')
+//		{
+//			Auth::user()->deleteFriend($id);
+//		}
+		Auth::user()->deleteFriend($id);
+
+		return response()->json(['success' => 123]);
+	}
 
     /**
      * Show the form for creating a new resource.

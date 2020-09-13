@@ -23,11 +23,9 @@
                 </a>
                 <div class="col-4 d-flex flex-column">
 
-                    <form action="{{ route('user.friends.update', $friend->id) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <button class="btn btn-danger">Отписаться</button>
-                    </form>
+                    <subscribe-component
+                        :user_id="{{ json_encode($friend->id) }}"
+                    />
 
                 </div>
             </div>

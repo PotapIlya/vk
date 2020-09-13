@@ -10,7 +10,7 @@
 {{--      @include('user.gallery.livewire.include.images')--}}
 
       <gallery-component
-              :gallery="{{ json_encode($gallery) }}"
+              :gallery="{{ json_encode($user->gallery) }}"
       />
 
   </div>

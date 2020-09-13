@@ -42,6 +42,9 @@ Route::group($groupData, function ()
 
 
 	Route::resource('/friends', 'FriendsController')->names('user.friends');
+	
+
+	Route::get('/friends/delete/{id}', 'FriendsController@deleteFriend')->name('user.friends.delete');
 
 
 	Route::get('/friend/request', 'FriendsController@requests')->name('user.friends.requests');
@@ -52,16 +55,19 @@ Route::group($groupData, function ()
 	/** API **/
 	Route::post('/api/my/edit', 'IndexController@updateEdit');
 	Route::post('/api/my/update', 'IndexController@updateImage');
+	Route::post('/api/my/wall', 'IndexController@storeWall');
 
 	Route::post('/api/gallery/comment', 'GalleryController@storeComment');
 	Route::post('/api/gallery/store', 'GalleryController@storeImage');
 	Route::post('/api/gallery/destroy', 'GalleryController@destroyImage');
+	Route::post('/api/gallery/like', 'GalleryController@postLike');
+
+	Route::post('/friend/add', 'FriendsController@postAddFriend');
+	Route::post('/friend/accept', 'FriendsController@postAccept');
+	Route::post('/friend/delete', 'FriendsController@postDelete');
 });
 
 
-//Route::get('/admin/{any}', function ()
-//{
-//	return view('user');
-//})->where('any', '.*');
+
 
 

@@ -5,8 +5,14 @@
  */
 
 require('./bootstrap');
+require('./scripts');
 
 window.Vue = require('vue');
+
+import Vue from 'vue';
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
+Vue.use( CKEditor );
 
 /**
  * The following block of code may be used to automatically register your
@@ -22,9 +28,17 @@ window.Vue = require('vue');
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('gallery-component', require('./components/user/gallery/GalleryComponent').default);
 Vue.component('comment-component', require('./components/user/gallery/CommentComponent').default);
+Vue.component('like-component', require('./components/user/gallery/LIkeComponent').default);
+
 
 Vue.component('edit-component', require('./components/user/my/EditComponent').default);
 Vue.component('image-component', require('./components/user/my/ImageComponent').default);
+Vue.component('wall-component', require('./components/user/my/WallComponent').default);
+
+Vue.component('add-button-component', require('./components/user/friends/AddButtonComponent').default);
+Vue.component('accept-button-component', require('./components/user/friends/AcceptButtonComponent').default);
+Vue.component('delete-component', require('./components/user/friends/DeleteComponent').default);
+Vue.component('subscribe-component', require('./components/user/friends/SubscribeComponent').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Users;
 use App\Components\Images\ActionImages;
 use App\Http\Controllers\Controller;
 use App\Models\Users\Comments;
+use App\Models\Users\Like;
 use App\Models\Users\User;
 use App\Repositories\Users\CommentRepository;
 use App\Repositories\Users\UserRepository;
@@ -46,14 +47,19 @@ class GalleryController extends BaseUserController
     public function index()
     {
 
-		$userId = Auth::id();
+//		$userId = Auth::id();
 
-		$gallery = $this->galleryRepository->getAllUserImages($userId);
+		$user = Auth::user();
+
+		$user = $user->load('gallery');
+//		dd(Auth::user()->gallery);
+
+//		$gallery = $this->galleryRepository->getAllUserImages($userId);
 
 //		dd($images);
 
     	return view('user.gallery.index', compact(
-    		'gallery'
+    		'user'
 		));
     }
 
@@ -136,17 +142,30 @@ class GalleryController extends BaseUserController
      */
     public function show($id)
     {
+    	$userId = Auth::id();
 
     	$image = $this->galleryRepository->getId($id);
 		if (!$image){
 			return abort(404);
-//			return redirect()->back()->withErrors(['msg' => self::ERROR]);
 		}
 
-		$comments = $this->commentRepository->getCommentId($id);
+		$image = $image->load('like');
+
+		$image->status = $image->like->where('user_id', $userId)->count();
+
+
+		foreach ($image->comments as $comment)
+		{
+			$comment->user = $comment->user;
+		}
+
+
+//		@dd($image->comments->user);
+//		$image = $image->load('comments');
+//		$comments = $this->commentRepository->getCommentId($id);
 
 		return view('user.gallery.show', compact(
-			'image', 'comments'
+			'image'
 		));
 
     }
@@ -154,14 +173,28 @@ class GalleryController extends BaseUserController
 
     public function showGalleryPerson($id)
 	{
-		$userImages = $this->galleryRepository->getAllUserImages( $id );
+		$userImages = $this->userRepository->getId( $id );
 
+		$userImages = $userImages->load('gallery');
 
 //		dd($userImages);
 
 		return view('user.gallery.persone', compact(
 			'userImages'
 		));
+	}
+
+	public function postLike(Request $request)
+	{
+		$upload = Like::create([
+			'user_id' => Auth::id(),
+			'gallery_id' => $request->image_id,
+		]);
+		if ($upload) {
+			return response()->json(['success' => 121]);
+		} else{
+			return response()->json(['error' => self::ERROR]);
+		}
 	}
 
     /**

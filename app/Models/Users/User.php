@@ -42,16 +42,28 @@ class User extends Authenticatable
 
     /** FUNCTIONS */
 
-
+	// cntyf
+	public function wall()
+	{
+		return $this->hasMany(UserWall::class, 'user_id', 'id');
+	}
+	// галлерея
+	public function countGallery($count)
+	{
+		return $this->hasMany(UserGallery::class, 'user_id', 'id')->limit($count)->get();
+	}
+	// галлерея
 	public function gallery()
 	{
 		return $this->hasMany(UserGallery::class, 'user_id', 'id');
 	}
-
+	// комментарии
 	public function comments()
 	{
 		return $this->hasMany(Comments::class, 'user_id', 'id');
 	}
+
+
 
 
 	public function friendsOfMine()
@@ -63,7 +75,7 @@ class User extends Authenticatable
 		return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id');
 	}
 
-
+	// все друзья
 	public function friends()
 	{
 		return $this->friendsOfMine()->wherePivot('accepted', true)->get()
@@ -90,46 +102,46 @@ class User extends Authenticatable
 		return $this->friendRequestPending()->where('id', $id)->count();
 	}
 
-	// Запрос о дружбе
+	// получить запрос о дружбе
 	public function hasFriendsRequestReceived($id)
 	{
 		return $this->friendRequest()->where('id', $id)->count();
 	}
 
-	// уже в друзьях
+
+	// добавить друга
+	public function addFriend($id)
+	{
+		return $this->friendsOfMine()->attach($id);
+	}
+
+
+	// удалить друга
+	public function deleteFriend($id)
+	{
+		$this->friendsOfMine()->detach($id);
+	}
+	// удалиться из подписок
+//	public function deleteSubscribe($id)
+//	{
+//		$this->friendsOfMine()->detach($id);
+//	}
+
+
+	// приянять запрос на дружбу
+	public function acceptFriendRequest($id)
+	{
+		return $this->friendRequestPending()->where('id', $id)->first()->pivot->update([
+			'accepted' => true
+		]);
+	}
+
+	// дружит с
 	public function isFriendWith($id)
 	{
 		return $this->friends()->where('id', $id)->count();
 	}
 
-
-
-
-
-
-
-	// принять запрос дружбы
-//	public function addFriend($id)
-//	{
-//		return $this->friendRequestPending()->first()->pivot();
-//	}
-
-
-
-	// Добавить друга
-	public function addFriend($id)
-	{
-		return $this->friendsOf()->attach($id);
-	}
-//
-
-// Принять запрос дружбы
-//	public function acceptFriendRequest()
-//	{
-//		return $this->friendRequest()->where('id', $id)->first()->pivot()->update([
-//			'accepted' => true
-//		]);
-//	}
 
 
 }

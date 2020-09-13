@@ -24,15 +24,20 @@
                        </div>
                    </a>
 
+                   <like-component
+                           :image_id="{{ json_encode($image->id) }}"
+                           :like="{{ json_encode($image->like) }}"
+                           :status="{{ json_encode($image->status) }}"
+                   />
+
                    <div>
-                       likes
-                   </div>
-                   <div>
+{{--                       @foreach($image->comments as $item)--}}
+{{--                           @dd($item->user)--}}
+{{--                       @endforeach--}}
                        <comment-component
                                :image_id="{{ json_encode($image->id) }}"
-                               :comments="{{ json_encode($comments) }}"
+                               :comments="{{ json_encode($image->comments) }}"
                        />
-{{--                       <livewire:user.comment-component :id="$image->id">--}}
                    </div>
                </div>
            </div>

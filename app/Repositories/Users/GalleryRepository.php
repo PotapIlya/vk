@@ -14,24 +14,24 @@ class GalleryRepository extends CoreRepository
 		return Model::class;
 	}
 
-	public function getAllUserImages($userId)
-	{
-		return $this->startConditions()
-			->select(['id', 'user_id', 'img'])
-			->where('user_id', $userId)
-			->get();
-	}
+//	public function getAllUserImages($userId)
+//	{
+//		return $this->startConditions()
+//			->select(['id', 'user_id', 'img'])
+//			->where('user_id', $userId)
+//			->get();
+//	}
 
-	public function getCountUserImage($userId, $count)
-	{
-		$images = $this->startConditions()
-			->select(['id', 'user_id', 'img'])
-			->where('user_id', $userId)
-			->take($count)
-			->get();
-
-		return $images;
-	}
+//	public function getCountUserImage($userId, $count)
+//	{
+//		$images = $this->startConditions()
+//			->select(['id', 'user_id', 'img'])
+//			->where('user_id', $userId)
+//			->take($count)
+//			->get();
+//
+//		return $images;
+//	}
 
 	public function getAllImages()
 	{

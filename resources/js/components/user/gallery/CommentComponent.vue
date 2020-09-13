@@ -42,7 +42,7 @@
 			'comments'
 		],
 		data: () => ({
-			id : 6,
+			id : null,
 			input: null,
 			frontComments: [],
 			url: '/api/gallery/comment',
@@ -50,6 +50,7 @@
 		mounted() {
             this.id = this.image_id;
             this.frontComments = this.comments;
+
 				
             // console.log(this.frontComments)
         },

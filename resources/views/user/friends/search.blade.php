@@ -16,23 +16,22 @@
         <div class="row align-items-center mt-5">
             @foreach($allUser as $user)
 
-                <a href="{{ route('user.my.show', $user->id) }}" class="col-4">
-                    <div class="w-100">
-                        <div>
-                            <img class="mw-100 h-auto" src="/storage/{{ $user->img ?? '../static/img/nophoto.png' }}" alt="">
-                        </div>
-                        <div>
-                            <h4>
-                                {{ $user->first_name }}  {{ $user->last_name }}
-                            </h4>
-                        </div>
-                        <div>
-                            <button class="btn btn-secondary">
-                                Добавить в друзья
-                            </button>
-                        </div>
-                    </div>
-                </a>
+                <div class="col-4">
+
+                   <div class="w-100">
+                       <a href="{{ route('user.my.show', $user->id) }}">
+                           <img class="mw-100 h-auto" src="/storage/{{ $user->img ?? '../static/img/nophoto.png' }}" alt="">
+                       </a>
+                       <h4>
+                           {{ $user->first_name }}  {{ $user->last_name }}
+                       </h4>
+
+                       <add-button-component
+                               :id="{{ json_encode($user->id) }}"
+                       />
+
+                   </div>
+                </div>
 
             @endforeach
         </div>

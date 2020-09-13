@@ -14,12 +14,12 @@ class CommentRepository extends CoreRepository
 		return Model::class;
 	}
 
-	public function getCommentId($id)
-	{
-		return $this->startConditions()
-			->where('gallery_id', $id)
-			->with('user')
-			->get();
-	}
+//	public function getCommentId($id)
+//	{
+//		return $this->startConditions()
+//			->where('gallery_id', $id)
+//			->with('user')
+//			->get();
+//	}
 
 }

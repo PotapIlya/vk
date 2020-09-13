@@ -6,6 +6,7 @@ use App\Components\Images\ActionImages;
 use App\Http\Controllers\Users\BaseUserController;
 use App\Http\Requests\Users\IndexEditRequest;
 use App\Models\Users\Friends;
+use App\Models\Users\UserWall;
 use App\Repositories\Users\GalleryRepository;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
@@ -33,7 +34,6 @@ class IndexController extends BaseUserController
 
 
 
-
     /**
      * Display a listing of the resource.
      *
@@ -43,13 +43,19 @@ class IndexController extends BaseUserController
     {
     	$user = Auth::user();
 
+		$user = $user->load('wall');
 
-    	$images = $this->galleryRepository->getCountUserImage($user->id ,4);
+
+
+		$user->countGallery = $user->countGallery(4);
+
+
+//    	$images = $this->galleryRepository->getCountUserImage($user->id ,4);
 
 
 		return view('user.my.index', compact(
-			'user',
-			'images'
+			'user'
+
 		));
     }
 
@@ -74,6 +80,25 @@ class IndexController extends BaseUserController
         //
     }
 
+    public function storeWall(Request $request)
+	{
+		if (!empty($request->data))
+		{
+			$upload = UserWall::create([
+				'user_id' => Auth::id(),
+				'text' => $request->data,
+			]);
+			if ($upload)
+			{
+				return response()->json(['success' => ['text' => $request->data]]);
+			} else{
+				return response()->json(self::ERROR);
+			}
+		}else{
+			return response()->json(self::ERROR);
+		}
+	}
+
     /**
      * Display the specified resource.
      *
@@ -86,9 +111,21 @@ class IndexController extends BaseUserController
 			return redirect()->route('user.my.index');
 		}
 
-
     	$user = $this->userRepository->getId($id);
-		$images = $this->galleryRepository->getCountUserImage( $id ,4);
+
+    	if (!$user)
+		{
+			return abort(404);
+		}
+
+		$user = $user->load('wall');
+
+//		dd($user);
+
+
+		$user->countGallery = $user->countGallery(4);
+
+//		$images = $this->galleryRepository->getCountUserImage( $id ,4);
 
 
 //		$friends = Auth::user()->friends();
@@ -103,7 +140,7 @@ class IndexController extends BaseUserController
 
 
 		return view('user.my.show', compact(
-			'user', 'images', 'userSubscribe', 'userPending', 'isFriend'
+			'user', 'userSubscribe', 'userPending', 'isFriend'
 		));
     }
 

@@ -3,6 +3,6 @@
 
 @section('content')
 
-    @include('user.gallery.livewire.include.images', [ 'gallery' => $userImages ])
+    @includeWhen(!is_null($userImages), 'user.gallery.include.images', [ 'gallery' => $userImages->gallery ])
 
 @endsection

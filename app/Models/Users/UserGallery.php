@@ -25,4 +25,11 @@ class UserGallery extends Model
 		return $this->hasMany(Comments::class, 'gallery_id', 'id');
 	}
 
+	public function like()
+	{
+		return $this->hasMany(Like::class, 'gallery_id', 'id');
+	}
+
+
+
 }

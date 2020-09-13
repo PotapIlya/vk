@@ -8,7 +8,7 @@
 
     <div class="row align-items-center justify-content-between">
 
-        @foreach($images as $image)
+        @foreach($user->countGallery as $image)
 
             <a href="{{ route('user.gallery.show', $image->id) }}" class="col-3">
                 <div class="card w-100">

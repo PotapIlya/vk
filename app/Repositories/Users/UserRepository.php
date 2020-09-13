@@ -17,26 +17,26 @@ class UserRepository extends CoreRepository
 	}
 
 
-	public function getUserFriends()
-	{
-//		$id = Auth::id();
-//		$user = parent::getId($id);
+//	public function getUserFriends()
+//	{
+////		$id = Auth::id();
+////		$user = parent::getId($id);
+//
+////		$user->friends = $user->friends();
+////		if ($user) $user = $user->load('friends');
+////		dd($user->friends());
+//
+//		return Auth::user()->friends();
+//
+//	}
 
-//		$user->friends = $user->friends();
-//		if ($user) $user = $user->load('friends');
-//		dd($user->friends());
-
-		return Auth::user()->friends();
-
-	}
-
-	public function getUserFriendsRequest()
-	{
-		$user =  Auth::user()->friendRequestPending();
-
-//		dd($user);
-		return $user;
-	}
+//	public function getUserFriendsRequest()
+//	{
+//		$user =  Auth::user()->friendRequestPending();
+//
+////		dd($user);
+//		return $user;
+//	}
 
 	public function getAllUser()
 	{

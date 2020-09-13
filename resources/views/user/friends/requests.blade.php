@@ -23,13 +23,11 @@
                 </a>
                 <div class="col-4 d-flex flex-column">
 
-{{--                    <form action="{{ route('user.friends.update', $friend->id) }}" method="POST">--}}
-{{--                        @csrf--}}
-{{--                        @method('PATCH')--}}
-{{--                        <button class="btn btn-success">Принять</button>--}}
-{{--                    </form>--}}
+                    <accept-button-component
+                        :id="{{ json_encode($friend->id) }}"
+                    />
 
-                    <a class="btn btn-success" href="">Принять</a>
+{{--                    <a class="btn btn-success" href="{{ route('user.friends.accept', $friend->id) }}">Принять</a>--}}
                 </div>
             </div>
 
