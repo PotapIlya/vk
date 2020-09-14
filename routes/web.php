@@ -40,17 +40,13 @@ Route::group($groupData, function ()
 
 	Route::resource('/news', 'NewsController')->names('user.news');
 
-
 	Route::resource('/friends', 'FriendsController')->names('user.friends');
-	
-
 	Route::get('/friends/delete/{id}', 'FriendsController@deleteFriend')->name('user.friends.delete');
-
-
 	Route::get('/friend/request', 'FriendsController@requests')->name('user.friends.requests');
 	Route::get('/friend/subscribe', 'FriendsController@subscribe')->name('user.friends.subscribe');
 	Route::get('/friend/search', 'FriendsController@search')->name('user.friends.search');
 
+	Route::resource('/settings', 'SettingsController')->names('user.settings');
 
 	/** API **/
 	Route::post('/api/my/edit', 'IndexController@updateEdit');

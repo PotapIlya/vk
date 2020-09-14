@@ -3,8 +3,6 @@
         <div class="d-flex justify-content-between">
             <div class="col-5 pl-0">
                 <div style="position: relative">
-                    {{--                   @dd($user)--}}
-
                     <img class="mw-100 h-auto" src="/storage/{{ $user->about->img ?? '../static/img/nophoto.png' }}" alt="">
                 </div>
                 <div class="my-1">

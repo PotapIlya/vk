@@ -2,7 +2,7 @@
 	<div>
 		
 			<div>
-				<img v-if="user.img !== null" class="mw-100 h-auto" :src="'/storage/'+user.img" alt="">
+				<img v-if="person.img !== null" class="mw-100 h-auto" :src="'/storage/'+person.img" alt="">
 				<img v-else class="mw-100 h-auto" src="/static/img/nophoto.png" alt="">
 			</div>
 		<form @submit.prevent="update"
@@ -24,12 +24,11 @@
 		props: ['user'],
 		data: () => ({
 			url: '/api/my/update',
-			person: null,
+			person: {},
 		}),
-		// mounted() {
-        //     this.person = this.user;
-        //     console.log()
-        // }
+		mounted() {
+            this.person = this.user;
+        },
         methods:{
             image(event)
             {
@@ -47,9 +46,7 @@
                     {
                         if(response.data.success)
 						{
-                            console.log(this.user.img)
-						    this.user.img = response.data.success;
-                            console.log(this.user.img)
+						    this.person.img = response.data.success;
 						}
                         if(response.data.error)
 						{

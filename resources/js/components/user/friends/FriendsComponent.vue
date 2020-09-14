@@ -6,7 +6,7 @@
 		
 		<div v-if="person.length">
 			<div v-for="(item, index) in person"
-				 class="col-10 d-flex align-items-center justify-content-between mb-3">
+				 class="col d-flex align-items-center justify-content-between mb-3">
 				<a :href="'/my/'+item.id" class="d-flex align-items-center">
 					<div v-if="item.img !== null" class="col-6">
 						<img style="border-radius: 50%" class="mw-100 h-auto" :src="'/storage/'+item.img" alt="">
@@ -51,11 +51,10 @@
 			{
 			    axios.post(this.url, {
 			        data: id,
-					type: 'delete'
 				})
 				.then(response =>{
 					this.person.splice(index, 1);
-                    console.log(response.data)
+                    // console.log(response.data)
 				})
 				.catch(error =>{
 					console.log(error)

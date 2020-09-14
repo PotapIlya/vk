@@ -44,20 +44,16 @@ class IndexController extends BaseUserController
     	$user = Auth::user();
 
 		$user = $user->load('wall');
-
-
-
 		$user->countGallery = $user->countGallery(4);
 
-
-//    	$images = $this->galleryRepository->getCountUserImage($user->id ,4);
 
 
 		return view('user.my.index', compact(
 			'user'
-
 		));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -118,23 +114,13 @@ class IndexController extends BaseUserController
 			return abort(404);
 		}
 
+
 		$user = $user->load('wall');
-
-//		dd($user);
-
-
 		$user->countGallery = $user->countGallery(4);
-
-//		$images = $this->galleryRepository->getCountUserImage( $id ,4);
-
-
-//		$friends = Auth::user()->friends();
-
 
 		// Запрос о дружбе
 		$userSubscribe = Auth::user()->hasFriendsRequestReceived($id);
 		$userPending = Auth::user()->hasFriendsRequestPending($id);
-
 
 		$isFriend = Auth::user()->isFriendWith($id);
 
@@ -168,16 +154,7 @@ class IndexController extends BaseUserController
      */
     public function update(Request $request, $id)
     {
-    	return 123;
-//    	$image = $request->file('image');
-//    	if (!is_null($image))
-//		{
-////			dd($image);
-//			$userAbout = Auth::user()->img;
-//			$this->actionImage->deleteAndUpload($image, $userAbout);
-//		}
-//
-//    	return redirect()->route('user.index.index')->with(['success' => self::SAVE]);
+    	//
     }
 
 
@@ -214,7 +191,6 @@ class IndexController extends BaseUserController
 		{
 			return ['error' => $validation->errors()];
 		}
-
 
 		$user = $this->userRepository->getId($userId);
 

@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Http\Controllers\Controller;
-use App\Repositories\Users\GalleryRepository;
-use Carbon\Carbon;
+use App\Http\Controllers\Users\BaseUserController;
+use App\Repositories\Users\UserRepository;
 use Illuminate\Http\Request;
+use Auth;
+use Illuminate\Support\Facades\Hash;
 
-class NewsController extends BaseUserController
+class SettingsController extends BaseUserController
 {
-	private $galleryRepository;
 
-	public function __construct(GalleryRepository $galleryRepository)
+	private $userRepository;
+
+	public function __construct(UserRepository $userRepository)
 	{
 		parent::__construct();
 
-		$this->galleryRepository = $galleryRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -25,10 +27,11 @@ class NewsController extends BaseUserController
      */
     public function index()
     {
-    	$gallery = $this->galleryRepository->getAllImages();
+    	$user = Auth::user();
 
-    	return view('user.news.index', compact(
-    		'gallery'
+
+    	return view('user.settings.index', compact(
+    		'user'
 		));
     }
 
@@ -80,11 +83,38 @@ class NewsController extends BaseUserController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+    	$user = $this->userRepository->getId($id);
+
+		$validation = \Validator::make($request->all() ,[
+			'old_password' => 'string|min:8',
+			'password' => 'string|min:8|confirmed',
+		]);
+		if ($validation->fails())
+		{
+			dd($validation->errors());
+			return redirect()->back()->withErrors(['msg' => $validation->errors() ]);
+		}
+
+		if(Hash::check($request->old_password, $user->password))
+		{
+			$update = $user->update([
+				'password' => bcrypt($request->password)
+			]);
+			if ($update)
+			{
+				return redirect()->back()->with(['success' => self::SAVE]);
+			}else{
+				return redirect()->back()->withErrors(['msg' => self::ERROR]);
+			}
+		}else{
+			return redirect()->back()->withErrors(['msg' => self::ERROR]);
+		}
+
+
     }
 
     /**

@@ -30,28 +30,8 @@ class FriendsController extends BaseUserController
     {
 		$user = Auth::user();
 
-
-//		dd($user->friendRequestPending());
-
-//    	$friends = $this->userRepository->getUserFriends();
-//    	$friendsRequest = $this->userRepository->getUserFriendsRequest();
-
 		$friends = $user->friends();
 		$friendsRequest = $user->friendRequestPending();
-
-//		dd($friendsRequest);
-
-
-
-//    	$subscriber = \Auth::user()->friendRequest();
-
-
-
-//    	dd($subscriber->friendRequest());
-
-//    	dd($friendsRequest);
-//		dd(12);
-
 
     	return view('user.friends.index', compact(
     		'friends', 'friendsRequest'
@@ -63,7 +43,6 @@ class FriendsController extends BaseUserController
 		$user = Auth::user();
 
 		$friendsRequest = $user->friendRequestPending();
-//		$friendsRequest = $this->userRepository->getUserFriendsRequest();
 
 
 		return view('user.friends.requests', compact(
@@ -77,8 +56,8 @@ class FriendsController extends BaseUserController
 		$user = Auth::user();
 
 		$friendsRequest = $user->friendRequestPending();
-//		$friendsRequest = $this->userRepository->getUserFriendsRequest();
-		$subscriber = \Auth::user()->friendRequest();
+		$subscriber = Auth::user()->friendRequest();
+
 
 		return view('user.friends.subscribe', compact(
 			'friendsRequest', 'subscriber'
@@ -89,7 +68,6 @@ class FriendsController extends BaseUserController
 	{
 		$user = Auth::user();
 		$friendsRequest = $user->friendRequestPending();
-//		$friendsRequest = $this->userRepository->getUserFriendsRequest();
 
 		$allUser = $this->userRepository->getAllUser();
 
@@ -117,7 +95,6 @@ class FriendsController extends BaseUserController
 		{
 			return response()->json(['error' => 'Пользователь уже в друзьях']);
 		}
-
 
 		$add = Auth::user()->addFriend($user->id);
 		return response()->json(['success' => 123]);
@@ -153,14 +130,7 @@ class FriendsController extends BaseUserController
 		{
 			Auth::user()->deleteFriend($id);
 		}
-//		if ($request->type === 'subscribe')
-//		{
-//			Auth::user()->deleteSubscribe($id);
-//		}
-//		if ($request->type === 'delete')
-//		{
-//			Auth::user()->deleteFriend($id);
-//		}
+
 		Auth::user()->deleteFriend($id);
 
 		return response()->json(['success' => 123]);
@@ -216,39 +186,10 @@ class FriendsController extends BaseUserController
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $friendId)
+    public function update(Request $request, $id)
     {
-    	$user = $this->userRepository->getId($friendId);
-
-    	if ( $user->hasFriendsRequestPending(\Auth::id()) || \Auth::user()->hasFriendsRequestPending($friendId) )
-		{
-//			\Auth::user()->addFriend($friendId);
-
-//			dd( \Auth::user()->addFriend($friendId) );
-
-//			$frend = Friends::where('user_id', 2)->get();
-
-//			\Auth::user()->addFriend($friendId);
-
-
-//			dd( \Auth::user()->addFriend($friendId) );
-
-
-//			dd($frend);
-
-			return redirect()->back()->with(['success' => 'da']);
-		}
-    	else{
-    		return redirect()->back()->withErrors(['msg' => self::ERROR]);
-		}
+    	//
     }
-    public function addFriend($id)
-	{
-
-		dd( $id );
-
-		\Auth::user()->addFriend($id);
-	}
 
     /**
      * Remove the specified resource from storage.

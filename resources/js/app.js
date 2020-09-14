@@ -36,8 +36,8 @@ Vue.component('image-component', require('./components/user/my/ImageComponent').
 Vue.component('wall-component', require('./components/user/my/WallComponent').default);
 
 Vue.component('add-button-component', require('./components/user/friends/AddButtonComponent').default);
-Vue.component('accept-button-component', require('./components/user/friends/AcceptButtonComponent').default);
-Vue.component('delete-component', require('./components/user/friends/DeleteComponent').default);
+Vue.component('accept-component', require('./components/user/friends/AcceptComponent').default);
+Vue.component('friends-component', require('./components/user/friends/FriendsComponent').default);
 Vue.component('subscribe-component', require('./components/user/friends/SubscribeComponent').default);
 
 /**

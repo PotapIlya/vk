@@ -22,10 +22,7 @@ class GalleryController extends BaseUserController
 	private $userRepository;
 	private $commentRepository;
 
-	public function __construct(
-
-
-								GalleryRepository $galleryRepository,
+	public function __construct(GalleryRepository $galleryRepository,
 								ActionImages $uploadImages,
 								UserRepository $userRepository,
 								CommentRepository $commentRepository
@@ -46,17 +43,9 @@ class GalleryController extends BaseUserController
      */
     public function index()
     {
-
-//		$userId = Auth::id();
-
 		$user = Auth::user();
 
 		$user = $user->load('gallery');
-//		dd(Auth::user()->gallery);
-
-//		$gallery = $this->galleryRepository->getAllUserImages($userId);
-
-//		dd($images);
 
     	return view('user.gallery.index', compact(
     		'user'
@@ -100,8 +89,6 @@ class GalleryController extends BaseUserController
 		else{
 			return redirect()->back()->withErrors(['msg' => self::IMG_NO_SELECTED]);
 		}
-
-
 	}
 
 
@@ -150,34 +137,24 @@ class GalleryController extends BaseUserController
 		}
 
 		$image = $image->load('like');
-
 		$image->status = $image->like->where('user_id', $userId)->count();
-
 
 		foreach ($image->comments as $comment)
 		{
 			$comment->user = $comment->user;
 		}
 
-
-//		@dd($image->comments->user);
-//		$image = $image->load('comments');
-//		$comments = $this->commentRepository->getCommentId($id);
-
 		return view('user.gallery.show', compact(
 			'image'
 		));
-
     }
 
 
     public function showGalleryPerson($id)
 	{
 		$userImages = $this->userRepository->getId( $id );
-
 		$userImages = $userImages->load('gallery');
 
-//		dd($userImages);
 
 		return view('user.gallery.persone', compact(
 			'userImages'
