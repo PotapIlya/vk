@@ -40,6 +40,11 @@ Vue.component('accept-component', require('./components/user/friends/AcceptCompo
 Vue.component('friends-component', require('./components/user/friends/FriendsComponent').default);
 Vue.component('subscribe-component', require('./components/user/friends/SubscribeComponent').default);
 
+
+
+Vue.component('chat-component', require('./components/ChatComponent').default);
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

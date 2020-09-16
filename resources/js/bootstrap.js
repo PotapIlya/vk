@@ -21,6 +21,7 @@ try {
 
 
 window.axios = require('axios');
+window.io = require('socket.io-client')
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

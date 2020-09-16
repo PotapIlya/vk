@@ -48,6 +48,9 @@ Route::group($groupData, function ()
 
 	Route::resource('/settings', 'SettingsController')->names('user.settings');
 
+	Route::post('/chat', 'ChatController@sendMessage');
+	Route::get('/chat1', 'ChatController@index');
+
 	/** API **/
 	Route::post('/api/my/edit', 'IndexController@updateEdit');
 	Route::post('/api/my/update', 'IndexController@updateImage');

@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 7.27.0.
+ * Generated for Laravel 7.28.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6701,7 +6701,7 @@
                     /**
          * Interesting events.
          * 
-         * Example: Users logs in, SQL logs.
+         * Example: User logs in, SQL logs.
          *
          * @param string $message
          * @param array $context
@@ -8057,6 +8057,100 @@
         public static function hasMacro($name)
         {
                         return \Illuminate\Routing\Redirector::hasMacro($name);
+        }
+         
+    }
+            /**
+     * 
+     *
+     * @method static \Illuminate\Redis\Limiters\ConcurrencyLimiterBuilder funnel(string $name)
+     * @method static \Illuminate\Redis\Limiters\DurationLimiterBuilder throttle(string $name)
+     * @see \Illuminate\Redis\RedisManager
+     * @see \Illuminate\Contracts\Redis\Factory
+     */ 
+        class Redis {
+                    /**
+         * Get a Redis connection by name.
+         *
+         * @param string|null $name
+         * @return \Illuminate\Redis\Connections\Connection 
+         * @static 
+         */ 
+        public static function connection($name = null)
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        return $instance->connection($name);
+        }
+                    /**
+         * Resolve the given connection by name.
+         *
+         * @param string|null $name
+         * @return \Illuminate\Redis\Connections\Connection 
+         * @throws \InvalidArgumentException
+         * @static 
+         */ 
+        public static function resolve($name = null)
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        return $instance->resolve($name);
+        }
+                    /**
+         * Return all of the created connections.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function connections()
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        return $instance->connections();
+        }
+                    /**
+         * Enable the firing of Redis command events.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function enableEvents()
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        $instance->enableEvents();
+        }
+                    /**
+         * Disable the firing of Redis command events.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function disableEvents()
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        $instance->disableEvents();
+        }
+                    /**
+         * Set the default driver.
+         *
+         * @param string $driver
+         * @return void 
+         * @static 
+         */ 
+        public static function setDriver($driver)
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        $instance->setDriver($driver);
+        }
+                    /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \Illuminate\Redis\RedisManager 
+         * @static 
+         */ 
+        public static function extend($driver, $callback)
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        return $instance->extend($driver, $callback);
         }
          
     }
@@ -10011,6 +10105,8 @@
                     /**
          * 
          *
+         * @param array $rules
+         * @param mixed $params
          * @static 
          */ 
         public static function validate($rules, ...$params)
@@ -10020,6 +10116,9 @@
                     /**
          * 
          *
+         * @param string $errorBag
+         * @param array $rules
+         * @param mixed $params
          * @static 
          */ 
         public static function validateWithBag($errorBag, $rules, ...$params)
@@ -10029,6 +10128,7 @@
                     /**
          * 
          *
+         * @param mixed $absolute
          * @static 
          */ 
         public static function hasValidSignature($absolute = true)
@@ -11126,33 +11226,7 @@
                     /**
          * 
          *
-         * @static 
-         */ 
-        public static function layout($layout)
-        {
-                        return \Illuminate\Routing\Router::layout($layout);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function section($section)
-        {
-                        return \Illuminate\Routing\Router::section($section);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function livewire($uri, $component = null)
-        {
-                        return \Illuminate\Routing\Router::livewire($uri, $component);
-        }
-                    /**
-         * 
-         *
+         * @param mixed $options
          * @static 
          */ 
         public static function auth($options = [])
@@ -14378,292 +14452,93 @@
      
 }
 
-    namespace Livewire { 
+    namespace Illuminate\Http { 
             /**
      * 
      *
-     * @see \Livewire\LivewireManager
      */ 
-        class Livewire {
+        class Request {
                     /**
          * 
          *
+         * @param array $rules
+         * @param mixed $params
          * @static 
          */ 
-        public static function component($alias, $viewClass)
+        public static function validate($rules, ...$params)
         {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->component($alias, $viewClass);
+                        return \Illuminate\Http\Request::validate($rules, ...$params);
+        }
+                    /**
+         * 
+         *
+         * @param string $errorBag
+         * @param array $rules
+         * @param mixed $params
+         * @static 
+         */ 
+        public static function validateWithBag($errorBag, $rules, ...$params)
+        {
+                        return \Illuminate\Http\Request::validateWithBag($errorBag, $rules, ...$params);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $absolute
+         * @static 
+         */ 
+        public static function hasValidSignature($absolute = true)
+        {
+                        return \Illuminate\Http\Request::hasValidSignature($absolute);
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\Routing { 
+            /**
+     * 
+     *
+     * @mixin \Illuminate\Routing\RouteRegistrar
+     */ 
+        class Router {
+                    /**
+         * 
+         *
+         * @param mixed $options
+         * @static 
+         */ 
+        public static function auth($options = [])
+        {
+                        return \Illuminate\Routing\Router::auth($options);
         }
                     /**
          * 
          *
          * @static 
          */ 
-        public static function componentResolver($callback)
+        public static function resetPassword()
         {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->componentResolver($callback);
+                        return \Illuminate\Routing\Router::resetPassword();
         }
                     /**
          * 
          *
          * @static 
          */ 
-        public static function getComponentClass($alias)
+        public static function confirmPassword()
         {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->getComponentClass($alias);
+                        return \Illuminate\Routing\Router::confirmPassword();
         }
                     /**
          * 
          *
          * @static 
          */ 
-        public static function activate($component, $id)
+        public static function emailVerification()
         {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->activate($component, $id);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function mount($name, $params = [])
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->mount($name, $params);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function dummyMount($id, $tagName)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->dummyMount($id, $tagName);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function test($name, $params = [])
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->test($name, $params);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function actingAs($user, $driver = null)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->actingAs($user, $driver);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function styles($options = [])
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->styles($options);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function scripts($options = [])
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->scripts($options);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function isLivewireRequest()
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->isLivewireRequest();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function getRootElementTagName($dom)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->getRootElementTagName($dom);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function dispatch($event, ...$params)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->dispatch($event, ...$params);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function listen($event, $callback)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->listen($event, $callback);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function isOnVapor()
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->isOnVapor();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function isLaravel7()
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->isLaravel7();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function resolveMethodDependencies($parameters, $reflector)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->resolveMethodDependencies($parameters, $reflector);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function registerHydrationMiddleware($classes)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->registerHydrationMiddleware($classes);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function registerInitialHydrationMiddleware($callables)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->registerInitialHydrationMiddleware($callables);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function registerInitialDehydrationMiddleware($callables)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->registerInitialDehydrationMiddleware($callables);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function hydrate($instance, $request)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->hydrate($instance, $request);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function initialHydrate($instance, $request)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->initialHydrate($instance, $request);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function initialDehydrate($instance, $response)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->initialDehydrate($instance, $response);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function dehydrate($instance, $response)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->dehydrate($instance, $response);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function hydrateProperty($callback)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->hydrateProperty($callback);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function dehydrateProperty($callback)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->dehydrateProperty($callback);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function performHydrateProperty($value, $property, $instance)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->performHydrateProperty($value, $property, $instance);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function performDehydrateProperty($value, $property, $instance)
-        {
-                        /** @var \Livewire\LivewireManager $instance */
-                        return $instance->performDehydrateProperty($value, $property, $instance);
+                        return \Illuminate\Routing\Router::emailVerification();
         }
          
     }
@@ -17634,6 +17509,7 @@ namespace  {
             class Password extends \Illuminate\Support\Facades\Password {}
             class Queue extends \Illuminate\Support\Facades\Queue {}
             class Redirect extends \Illuminate\Support\Facades\Redirect {}
+            class Redis extends \Illuminate\Support\Facades\Redis {}
             class Request extends \Illuminate\Support\Facades\Request {}
             class Response extends \Illuminate\Support\Facades\Response {}
             class Route extends \Illuminate\Support\Facades\Route {}
@@ -17645,7 +17521,6 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
-            class Livewire extends \Livewire\Livewire {}
      
 }
 
